@@ -1,0 +1,56 @@
+
+
+table.manifest-table {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+table.manifest-table.loading tr {
+  color: #555;
+}
+
+th {
+  white-space: nowrap;
+}
+
+.manifest-pager {
+  display: block;
+  text-align: right;
+}
+
+.manifest-table th {
+  padding: 0;
+  margin: 0;
+}
+
+.manifest-table th > div {
+  padding: 0.75em;
+}
+
+.manifest-table td {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+  
+.manifest-table th > div.sortable {
+  cursor: pointer;
+}
+
+.manifest-table th > div.sorted-asc:after {
+  content: "▲";
+  vertical-align: top;
+}
+
+.manifest-table th > div.sorted-desc:after {
+  content: "▼";
+  vertical-align: bottom;
+}
+
+.manifest-table th > div.sorted-asc:after,
+.manifest-table th > div.sorted-desc:after {
+  width: 0;
+  display: inline-block;
+  font-size: .8em;
+  margin-left: .25em;
+}

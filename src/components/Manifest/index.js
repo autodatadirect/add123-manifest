@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Manifest, DefaultTable, DefaultControlsPageSizer, DefaultControlsStatus } from 'use-manifest'
-
-import Pager from './Pager'
-import './index.scss'
+import { Row, Col } from 'reactstrap'
+import Pager from '../Pager'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
@@ -29,11 +28,17 @@ const StandardManifest = props => {
     <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={definition}>
       {Filter ? <Filter /> : null}
       <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
-      <div className='manifest-controls'>
-        <DefaultControlsPageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
-        <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
-        <Pager />
-      </div>
+      <Row>
+        <Col>
+          <DefaultControlsPageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
+        </Col>
+        <Col className='text-center'>
+          <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
+        </Col>
+        <Col>
+          <Pager />
+        </Col>
+      </Row>
     </Manifest>
   )
 }

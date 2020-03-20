@@ -30,7 +30,7 @@ const Updater = ({ urlState, initialValues, pageSize, sorts }) => {
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
 
   useEffect(() => {
-    const filter = isFirstLoad ? { ...initialValues, ...urlState } : { ...urlState }
+    const filter = isFirstLoad ? { ...initialValues || {}, ...urlState } : { ...urlState }
 
     const page = +filter.page
     const pageSize = +filter.pageSize
@@ -40,6 +40,9 @@ const Updater = ({ urlState, initialValues, pageSize, sorts }) => {
     delete filter.pageSize
     delete filter.sort
 
+    console.log('updating form')
+
+    updateForm(filter)
     updateManifestState({ filter, page, pageSize, sorts })
   }, [updateForm, updateManifestState, urlState, initialValues])
 
@@ -56,6 +59,7 @@ const SubmitOnEnter = ({ children }) => {
 
 export default ({ children, initialValues, pageSize, sorts }) => {
   const [urlState, updateUrl] = useUrlParamState()
+  console.log('urlstate', JSON.stringify(urlState, null, 2))
   return (
     <AmiableForm process={updateUrl}>
       <Updater urlState={urlState} initialValues={initialValues} pageSize={pageSize} sorts={sorts} />

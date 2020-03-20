@@ -1,11 +1,11 @@
 {
   "name": "add123-manifest",
-  "version": "1.1.6",
+  "version": "0.0.1",
   "description": "A paginated table implementation using React Hooks",
   "main": "./dist/index.js",
   "repository": "https://github.com/autodatadirect/add123-manifest",
   "scripts": {
-    "build": "babel ./src -d ./dist; cp ./src/index.css ./dist/index.css",
+    "build": "babel ./src -d ./dist; cp ./src/index.css ./dist/add123-manifest.css",
     "prepublish": "npm run build",
     "lint": "standard \"./src/**/*.js\"",
     "test": "jest ./src/* --watch",
