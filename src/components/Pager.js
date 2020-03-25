@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { usePager } from 'use-manifest'
 import { Button } from 'reactstrap'
+import useUrlParamState from '../hooks/useUrlParamState'
 
 const Pager = () => {
   const { page, pages, count, totalPages, loading } = usePager({ numberOfPages: 5 })
@@ -24,8 +25,8 @@ Pager.propTypes = {
 }
 
 const PagerButton = ({ page, loading, isCurrentPage, children }) => {
-  const { setPage } = usePager({})
-  const handleClick = useCallback(() => setPage(page), [page])
+  const [urlState, updateUrl] = useUrlParamState()
+  const handleClick = useCallback(() => updateUrl({ ...urlState, page }), [page, urlState])
 
   let buttonStyle = 'pager-button'
   if (isCurrentPage) buttonStyle += ' current-page'

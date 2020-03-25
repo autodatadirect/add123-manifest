@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Manifest, DefaultTable, DefaultControlsPageSizer, DefaultControlsStatus } from 'use-manifest'
-
+import { Manifest, DefaultTable, DefaultControlsStatus, Debug } from 'use-manifest'
+import { Row, Col } from 'reactstrap'
 import Pager from './Pager'
-import './index.scss'
+import PageSizer from './PageSizer'
+import UrlHeader from './UrlHeader'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
@@ -22,18 +23,28 @@ const StandardManifest = props => {
     statusMessageGenerator = DEFAULT_STATUS_MESSAGE_GENERATOR,
     trPropsHandler,
     tdPropsHandler,
-    Filter
+    Filter,
+    debug = false
   } = props
 
+  const adjustedDefinition = definition.map(def => ({ ...def, headerComponent: def.headerComponent || UrlHeader }))
+
   return (
-    <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={definition}>
+    <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={adjustedDefinition}>
       {Filter ? <Filter /> : null}
       <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
-      <div className='manifest-controls'>
-        <DefaultControlsPageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
-        <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
-        <Pager />
-      </div>
+      <Row>
+        <Col>
+          <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
+        </Col>
+        <Col className='text-center'>
+          <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
+        </Col>
+        <Col>
+          <Pager />
+        </Col>
+      </Row>
+      {debug ? <Debug /> : null}
     </Manifest>
   )
 }
@@ -41,13 +52,14 @@ const StandardManifest = props => {
 StandardManifest.propTypes = {
   fetchCount: PropTypes.func.isRequired,
   fetchRows: PropTypes.func.isRequired,
-  definition: PropTypes.object.isRequired,
+  definition: PropTypes.array.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number),
   pageSizeLableGenerator: PropTypes.func,
   statusMessageGenerator: PropTypes.func,
   trPropsHandler: PropTypes.func,
   tdPropsHandler: PropTypes.func,
-  Filter: PropTypes.func
+  Filter: PropTypes.func,
+  debug: PropTypes.bool
 }
 
 export default StandardManifest
