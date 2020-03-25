@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Manifest, DefaultTable, DefaultControlsStatus, Debug } from 'use-manifest'
 import { Row, Col } from 'reactstrap'
-import Pager from '../Pager'
-import PageSizer from '../PageSizer'
-import UrlHeader from '../UrlHeader'
+import Pager from './Pager'
+import PageSizer from './PageSizer'
+import UrlHeader from './UrlHeader'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
@@ -23,7 +23,8 @@ const StandardManifest = props => {
     statusMessageGenerator = DEFAULT_STATUS_MESSAGE_GENERATOR,
     trPropsHandler,
     tdPropsHandler,
-    Filter
+    Filter,
+    debug = false
   } = props
 
   const adjustedDefinition = definition.map(def => ({ ...def, headerComponent: def.headerComponent || UrlHeader }))
@@ -43,7 +44,7 @@ const StandardManifest = props => {
           <Pager />
         </Col>
       </Row>
-      <Debug />
+      {debug ? <Debug /> : null}
     </Manifest>
   )
 }

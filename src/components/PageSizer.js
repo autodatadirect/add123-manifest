@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import propTypes from 'prop-types'
-import useUrlParamState from '../../hooks/useUrlParamState'
+import useUrlParamState from '../hooks/useUrlParamState'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100, 200]
 

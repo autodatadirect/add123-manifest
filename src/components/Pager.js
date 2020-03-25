@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { usePager } from 'use-manifest'
 import { Button } from 'reactstrap'
-import useUrlParamState from '../../hooks/useUrlParamState'
+import useUrlParamState from '../hooks/useUrlParamState'
 
 const Pager = () => {
   const { page, pages, count, totalPages, loading } = usePager({ numberOfPages: 5 })

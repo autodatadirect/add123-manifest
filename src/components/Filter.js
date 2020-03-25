@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
-import { fromUrl as sortsFromUrl } from '../../utils/sortsConverter'
-import useUrlParamState from '../../hooks/useUrlParamState'
+import { fromUrl as sortsFromUrl } from '../utils/sortsConverter'
+import useUrlParamState from '../hooks/useUrlParamState'
 
 const NOPE = () => false
 
@@ -49,7 +49,6 @@ const SubmitOnEnter = ({ children }) => {
 
 export default ({ children, initialValues, pageSize, sorts }) => {
   const [urlState, updateUrl] = useUrlParamState()
-  console.log('urlstate', JSON.stringify(urlState, null, 2))
   return (
     <AmiableForm process={updateUrl}>
       <Updater urlState={urlState} initialValues={initialValues} pageSize={pageSize} sorts={sorts} />
