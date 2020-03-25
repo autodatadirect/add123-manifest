@@ -58,7 +58,8 @@ StandardManifest.propTypes = {
   statusMessageGenerator: PropTypes.func,
   trPropsHandler: PropTypes.func,
   tdPropsHandler: PropTypes.func,
-  Filter: PropTypes.func
+  Filter: PropTypes.func,
+  debug: PropTypes.bool
 }
 
 export default StandardManifest
