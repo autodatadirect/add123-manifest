@@ -1,22 +1,18 @@
 import React, { useCallback } from 'react'
 import propTypes from 'prop-types'
+import useUrlParamState from '../../hooks/useUrlParamState'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100, 200]
 
 const DEFAULT_TEXT_GENERATOR = size => `Show ${size} entries`
 
 const PageSizer = ({ pageSizes = DEFAULT_PAGE_SIZES, pageSizeLabelGenerator = DEFAULT_TEXT_GENERATOR }) => {
-  //const { pageSize, setPageSize } = useManifest()
   const [urlState, updateUrl] = useUrlParamState()
-
   const { pageSize } = urlState
-
-  console.log('PageSizer', {urlState})
-
 
   const handlePageSizeChange = useCallback(ev => {
     const pageSize = +ev.target.value
-    updateUrl({...urlState, pageSize })
+    updateUrl({ ...urlState, pageSize, page: 0 })
   }, [updateUrl, urlState])
 
   return (

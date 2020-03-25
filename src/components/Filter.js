@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
+import { fromUrl as sortsFromUrl } from '../../utils/sortsConverter'
 import useUrlParamState from '../../hooks/useUrlParamState'
 
 const NOPE = () => false
@@ -15,15 +16,6 @@ const useIsFirstLoad = () => {
   return false
 }
 
-const parseSorts = urlSort => {
-  if (!urlSort) return []
-  const sortArray = (typeof urlSort === 'string') ? [urlSort] : urlSort
-  return sortArray.map(sort => ({
-    id: sort.replace(/^!/, ''),
-    direction: sort.startsWith('!') ? 'DESCENDING' : 'ASCENDING'
-  }))
-}
-
 const Updater = ({ urlState, initialValues, pageSize, sorts }) => {
   const isFirstLoad = useIsFirstLoad()
   const { updateState: updateManifestState } = useManifest()
@@ -34,13 +26,11 @@ const Updater = ({ urlState, initialValues, pageSize, sorts }) => {
 
     const page = +filter.page
     const pageSize = +filter.pageSize
-    const sorts = parseSorts(filter.sort)
+    const sorts = sortsFromUrl(filter.sort)
 
     delete filter.page
     delete filter.pageSize
     delete filter.sort
-
-    console.log('updating form')
 
     updateForm(filter)
     updateManifestState({ filter, page, pageSize, sorts })

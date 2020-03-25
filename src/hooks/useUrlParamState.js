@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router'
-import createFilterQueryString from '../utils/createUrlParams'
+import queryString from 'query-string'
 import useUrlParams from './useUrlParams'
 
 let counter = 0
@@ -14,6 +14,6 @@ export default () => {
   const history = useHistory()
   return [
     state,
-    newState => history.push({ search: '?' + createFilterQueryString({ ...newState, cb: counter++ }) })
+    newState => history.push({ search: '?' + queryString.stringify({ ...newState, cb: counter++ }) })
   ]
 }

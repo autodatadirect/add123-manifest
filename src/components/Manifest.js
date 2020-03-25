@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Manifest, DefaultTable, DefaultControlsPageSizer, DefaultControlsStatus } from 'use-manifest'
+import { Manifest, DefaultTable, DefaultControlsStatus, Debug } from 'use-manifest'
 import { Row, Col } from 'reactstrap'
 import Pager from '../Pager'
+import PageSizer from '../PageSizer'
+import UrlHeader from '../UrlHeader'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
@@ -24,13 +26,15 @@ const StandardManifest = props => {
     Filter
   } = props
 
+  const adjustedDefinition = definition.map(def => ({ ...def, headerComponent: def.headerComponent || UrlHeader }))
+
   return (
-    <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={definition}>
+    <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={adjustedDefinition}>
       {Filter ? <Filter /> : null}
       <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
       <Row>
         <Col>
-          <DefaultControlsPageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
+          <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
         </Col>
         <Col className='text-center'>
           <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
@@ -39,6 +43,7 @@ const StandardManifest = props => {
           <Pager />
         </Col>
       </Row>
+      <Debug />
     </Manifest>
   )
 }
@@ -46,7 +51,7 @@ const StandardManifest = props => {
 StandardManifest.propTypes = {
   fetchCount: PropTypes.func.isRequired,
   fetchRows: PropTypes.func.isRequired,
-  definition: PropTypes.object.isRequired,
+  definition: PropTypes.array.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number),
   pageSizeLableGenerator: PropTypes.func,
   statusMessageGenerator: PropTypes.func,
