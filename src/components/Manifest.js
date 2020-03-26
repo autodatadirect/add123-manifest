@@ -10,8 +10,10 @@ const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
 const DEFAULT_PAGESIZE_LABEL_GENERATOR = size => `Show ${size}`
 
-const DEFAULT_STATUS_MESSAGE_GENERATOR = ({ count, lastOnPage, firstOnPage }) =>
-  count < 1 ? 'No Results' : `Showing ${firstOnPage} to ${lastOnPage} of ${count}`
+const DEFAULT_STATUS_MESSAGE_GENERATOR = ({ count, lastOnPage, firstOnPage, loading }) => {
+  if (loading) return 'Loading'
+  return count < 1 ? 'No Results' : `Showing ${firstOnPage} to ${lastOnPage} of ${count}`
+}
 
 const StandardManifest = props => {
   const {
@@ -34,13 +36,13 @@ const StandardManifest = props => {
       {Filter ? <Filter /> : null}
       <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
       <Row>
-        <Col>
+        <Col className='pl-4'>
           <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
         </Col>
         <Col className='text-center'>
           <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
         </Col>
-        <Col>
+        <Col className='pr-4'>
           <Pager />
         </Col>
       </Row>
