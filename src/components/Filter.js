@@ -12,7 +12,6 @@ const Updater = ({ urlState, defaultValues, pageSize, sorts }) => {
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
 
   useEffect(() => {
-    console.log({ defaultValues })
     const filter = { ...(defaultValues || {}), ...urlState }
 
     const page = +filter.page
