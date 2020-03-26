@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
@@ -7,22 +7,13 @@ import useUrlParamState from '../hooks/useUrlParamState'
 
 const NOPE = () => false
 
-const useIsFirstLoad = () => {
-  const ref = useRef()
-  if (!ref.current) {
-    ref.current = true
-    return true
-  }
-  return false
-}
-
-const Updater = ({ urlState, initialValues, pageSize, sorts }) => {
-  const isFirstLoad = useIsFirstLoad()
+const Updater = ({ urlState, defaultValues, pageSize, sorts }) => {
   const { updateState: updateManifestState } = useManifest()
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
 
   useEffect(() => {
-    const filter = isFirstLoad ? { ...initialValues || {}, ...urlState } : { ...urlState }
+    console.log({ defaultValues })
+    const filter = { ...(defaultValues || {}), ...urlState }
 
     const page = +filter.page
     const pageSize = +filter.pageSize
@@ -34,7 +25,7 @@ const Updater = ({ urlState, initialValues, pageSize, sorts }) => {
 
     updateForm(filter)
     updateManifestState({ filter, page, pageSize, sorts })
-  }, [updateForm, updateManifestState, urlState, initialValues])
+  }, [updateForm, updateManifestState, urlState, defaultValues])
 
   return null
 }
@@ -47,11 +38,11 @@ const SubmitOnEnter = ({ children }) => {
   return <div onKeyDown={handler}>{children}</div>
 }
 
-export default ({ children, initialValues, pageSize, sorts }) => {
+export default ({ children, defaultValues, pageSize, sorts }) => {
   const [urlState, updateUrl] = useUrlParamState()
   return (
     <AmiableForm process={updateUrl}>
-      <Updater urlState={urlState} initialValues={initialValues} pageSize={pageSize} sorts={sorts} />
+      <Updater urlState={urlState} defaultValues={defaultValues} pageSize={pageSize} sorts={sorts} />
       <SubmitOnEnter>
         {children}
       </SubmitOnEnter>
