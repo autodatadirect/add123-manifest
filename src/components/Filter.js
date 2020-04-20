@@ -37,10 +37,10 @@ const SubmitOnEnter = ({ children }) => {
   return <div onKeyDown={handler}>{children}</div>
 }
 
-export default ({ children, defaultValues, pageSize, sorts }) => {
+export default ({ children, defaultValues, pageSize, sorts, transform }) => {
   const [urlState, updateUrl] = useUrlParamState()
   return (
-    <AmiableForm process={updateUrl}>
+    <AmiableForm process={updateUrl} transform={transform}>
       <Updater urlState={urlState} defaultValues={defaultValues} pageSize={pageSize} sorts={sorts} />
       <SubmitOnEnter>
         {children}
