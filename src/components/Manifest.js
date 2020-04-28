@@ -34,15 +34,17 @@ const StandardManifest = props => {
   return (
     <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={adjustedDefinition}>
       {Filter ? <Filter /> : null}
-      <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
-      <Row>
-        <Col className='pl-4'>
+      <div className='table-responsive'>
+        <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
+      </div>
+      <Row className='align-items-center'>
+        <Col xs={12} md className='pl-md-4 py-2 py-md-0 text-sm-center text-md-left'>
           <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
         </Col>
-        <Col className='text-center'>
+        <Col xs={12} md className='text-center py-2 py-md-0'>
           <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
         </Col>
-        <Col className='pr-4'>
+        <Col xs={12} md='auto' className='pr-md-4 py-2 py-md-0 d-flex d-md-block'>
           <Pager />
         </Col>
       </Row>
