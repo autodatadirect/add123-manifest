@@ -5,13 +5,14 @@ import { Row, Col } from 'reactstrap'
 import Pager from './Pager'
 import PageSizer from './PageSizer'
 import UrlHeader from './UrlHeader'
+import LoadingSpinner from './LoadingSpinner'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
 const DEFAULT_PAGESIZE_LABEL_GENERATOR = size => `Show ${size}`
 
 const DEFAULT_STATUS_MESSAGE_GENERATOR = ({ count, lastOnPage, firstOnPage, loading }) => {
-  if (loading) return 'Loading'
+  if (loading) return <><LoadingSpinner />Loading...</>
   return count < 1 ? 'No Results' : `Showing ${firstOnPage} to ${lastOnPage} of ${count}`
 }
 
@@ -34,17 +35,17 @@ const StandardManifest = props => {
   return (
     <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={adjustedDefinition}>
       {Filter ? <Filter /> : null}
-      <div className='table-responsive'>
+      <div className='table-responsive mb-4'>
         <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
       </div>
       <Row className='align-items-center'>
-        <Col xs={12} md className='pl-md-4 py-2 py-md-0 text-sm-center text-md-left'>
+        <Col xs={12} md={3} className='pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
           <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
         </Col>
-        <Col xs={12} md className='text-center py-2 py-md-0'>
+        <Col xs={12} md className='text-center my-2 my-md-0'>
           <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
         </Col>
-        <Col xs={12} md='auto' className='pr-md-4 py-2 py-md-0 d-flex d-md-block'>
+        <Col xs={12} md='auto' className='pr-md-4 my-2 my-md-0 d-flex d-md-block'>
           <Pager />
         </Col>
       </Row>
