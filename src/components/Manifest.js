@@ -1,19 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Manifest, DefaultTable, DefaultControlsStatus, Debug } from 'use-manifest'
+import { Manifest, DefaultTable, DefaultControlsStatus, Debug, useManifest } from 'use-manifest'
 import { Row, Col } from 'reactstrap'
 import Pager from './Pager'
 import PageSizer from './PageSizer'
 import UrlHeader from './UrlHeader'
-import LoadingSpinner from './LoadingSpinner'
+import NoResults from './NoResults'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
 const DEFAULT_PAGESIZE_LABEL_GENERATOR = size => `Show ${size}`
 
 const DEFAULT_STATUS_MESSAGE_GENERATOR = ({ count, lastOnPage, firstOnPage, loading }) => {
-  if (loading) return <><LoadingSpinner />Loading...</>
+  if (loading) return 'Loading...'
   return count < 1 ? 'No Results' : `Showing ${firstOnPage} to ${lastOnPage} of ${count}`
+}
+
+const NoResultsWrapper = ({ noResultsComponent }) => {
+  const { count } = useManifest()
+  if (count) return null
+  const Component = noResultsComponent || NoResults
+  return <Component />
 }
 
 const StandardManifest = props => {
@@ -24,6 +31,7 @@ const StandardManifest = props => {
     pageSizes = DEFAULT_PAGE_SIZES,
     pageSizeLabelGenerator = DEFAULT_PAGESIZE_LABEL_GENERATOR,
     statusMessageGenerator = DEFAULT_STATUS_MESSAGE_GENERATOR,
+    noResultsComponent,
     trPropsHandler,
     tdPropsHandler,
     Filter,
@@ -31,12 +39,12 @@ const StandardManifest = props => {
   } = props
 
   const adjustedDefinition = definition.map(def => ({ ...def, headerComponent: def.headerComponent || UrlHeader }))
-
   return (
     <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={adjustedDefinition}>
       {Filter ? <Filter /> : null}
       <div className='table-responsive mb-4'>
         <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
+        <NoResultsWrapper noResultsComponent={noResultsComponent} />
       </div>
       <Row className='align-items-center'>
         <Col xs={12} md={3} className='pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
