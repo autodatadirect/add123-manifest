@@ -23,6 +23,24 @@ const NoResultsWrapper = ({ noResultsComponent }) => {
   return <Component />
 }
 
+const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }) => {
+  const { count } = useManifest()
+  if (!count) return null
+  return (
+    <Row className='align-items-center'>
+      <Col xs={12} md={3} className='pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
+        <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
+      </Col>
+      <Col xs={12} md className='text-center my-2 my-md-0'>
+        <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
+      </Col>
+      <Col xs={12} md='auto' className='pr-md-4 my-2 my-md-0 d-flex d-md-block'>
+        <Pager />
+      </Col>
+    </Row>
+  )
+}
+
 const StandardManifest = props => {
   const {
     fetchCount,
@@ -46,17 +64,7 @@ const StandardManifest = props => {
         <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
         <NoResultsWrapper noResultsComponent={noResultsComponent} />
       </div>
-      <Row className='align-items-center'>
-        <Col xs={12} md={3} className='pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
-          <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
-        </Col>
-        <Col xs={12} md className='text-center my-2 my-md-0'>
-          <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
-        </Col>
-        <Col xs={12} md='auto' className='pr-md-4 my-2 my-md-0 d-flex d-md-block'>
-          <Pager />
-        </Col>
-      </Row>
+      <ManifestNavigation pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} statusMessageGenerator={statusMessageGenerator} />
       {debug ? <Debug /> : null}
     </Manifest>
   )
