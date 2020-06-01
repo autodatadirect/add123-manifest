@@ -1,5 +1,3 @@
-
-
 table.manifest-table {
   background: #fff;
   border-bottom: 1px solid #ccc;
@@ -32,7 +30,7 @@ th {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
-  
+
 .manifest-table th > div.sortable {
   cursor: pointer;
 }
@@ -51,6 +49,13 @@ th {
 .manifest-table th > div.sorted-desc:after {
   width: 0;
   display: inline-block;
-  font-size: .8em;
-  margin-left: .25em;
+  font-size: 0.8em;
+  margin-left: 0.25em;
+}
+
+.no-results {
+  display: flex;
+  height: 200px;
+  position: sticky;
+  left: 0;
 }
