@@ -68,7 +68,7 @@ StandardManifest.propTypes = {
   fetchRows: PropTypes.func.isRequired,
   definition: PropTypes.array.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number),
-  pageSizeLableGenerator: PropTypes.func,
+  pageSizeLabelGenerator: PropTypes.func,
   statusMessageGenerator: PropTypes.func,
   trPropsHandler: PropTypes.func,
   tdPropsHandler: PropTypes.func,
