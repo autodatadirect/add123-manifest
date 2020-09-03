@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
@@ -39,8 +39,13 @@ const SubmitOnEnter = ({ children }) => {
 
 export default ({ children, defaultValues, pageSize, sorts, transform }) => {
   const [urlState, updateUrl] = useUrlParamState()
+  
+  const process = useCallback(values => {
+    updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort })
+  }, [urlState, updateUrl])
+  
   return (
-    <AmiableForm process={updateUrl} transform={transform}>
+    <AmiableForm process={process} transform={transform}>
       <Updater urlState={urlState} defaultValues={defaultValues} pageSize={pageSize} sorts={sorts} />
       <SubmitOnEnter>
         {children}
