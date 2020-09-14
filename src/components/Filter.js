@@ -7,7 +7,7 @@ import useUrlParamState from '../hooks/useUrlParamState'
 
 const NOPE = () => false
 
-const Updater = ({ urlState, defaultValues, pageSize, sorts }) => {
+const Updater = ({ urlState, defaultValues }) => {
   const { updateState: updateManifestState } = useManifest()
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
 
@@ -37,16 +37,16 @@ const SubmitOnEnter = ({ children }) => {
   return <div onKeyDown={handler}>{children}</div>
 }
 
-export default ({ children, defaultValues, pageSize, sorts, transform }) => {
+export default ({ children, defaultValues, transform }) => {
   const [urlState, updateUrl] = useUrlParamState()
-  
+
   const process = useCallback(values => {
     updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort })
   }, [urlState, updateUrl])
-  
+
   return (
     <AmiableForm process={process} transform={transform}>
-      <Updater urlState={urlState} defaultValues={defaultValues} pageSize={pageSize} sorts={sorts} />
+      <Updater urlState={urlState} defaultValues={defaultValues} />
       <SubmitOnEnter>
         {children}
       </SubmitOnEnter>
