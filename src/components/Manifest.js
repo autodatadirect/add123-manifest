@@ -20,7 +20,7 @@ const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGe
   const { count } = useManifest()
   if (!count) return null
   return (
-    <Row className='align-items-center'>
+    <Row className='align-items-center mx-0'>
       <Col xs={12} md={3} className='pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
         <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
       </Col>
