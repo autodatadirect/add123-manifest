@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Manifest, DefaultTable, DefaultControlsStatus, Debug, useManifest } from 'use-manifest'
-import { Row, Col } from 'reactstrap'
 import Pager from './Pager'
 import PageSizer from './PageSizer'
 import UrlHeader from './UrlHeader'
@@ -20,17 +19,17 @@ const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGe
   const { count } = useManifest()
   if (!count) return null
   return (
-    <Row className='align-items-center mx-0'>
-      <Col xs={12} md={3} className='pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
+    <div className='row align-items-center mx-0'>
+      <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
         <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
-      </Col>
-      <Col xs={12} md className='text-center my-2 my-md-0'>
+      </div>
+      <div className='col-xs-12 col-md text-center my-2 my-md-0'>
         <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
-      </Col>
-      <Col xs={12} md='auto' className='pr-md-4 my-2 my-md-0 d-flex d-md-block'>
+      </div>
+      <div className='col-xs-12 col-md-auto pr-md-4 my-2 my-md-0 d-flex d-md-block'>
         <Pager />
-      </Col>
-    </Row>
+      </div>
+    </div>
   )
 }
 

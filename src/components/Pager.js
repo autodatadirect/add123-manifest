@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { usePager } from 'use-manifest'
-import { Button } from 'reactstrap'
 import useUrlParamState from '../hooks/useUrlParamState'
 
 const Pager = () => {
@@ -28,13 +27,13 @@ const PagerButton = ({ page, loading, isCurrentPage, children }) => {
   const [urlState, updateUrl] = useUrlParamState()
   const handleClick = useCallback(() => updateUrl({ ...urlState, page }), [page, urlState])
 
-  let buttonStyle = 'pager-button'
+  let buttonStyle = 'btn rounded page-button'
   if (isCurrentPage) buttonStyle += ' current-page'
   const color = isCurrentPage ? 'primary' : 'default'
   return (
-    <Button data-page={page} color={color} className={buttonStyle} onClick={handleClick} disabled={loading}>
+    <button data-page={page} color={color} className={buttonStyle} onClick={handleClick} disabled={loading}>
       {children}
-    </Button>
+    </button>
   )
 }
 

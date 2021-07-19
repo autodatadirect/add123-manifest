@@ -59,3 +59,13 @@ th {
   position: sticky;
   left: 0;
 }
+
+.current-page {
+  background: rgba(14, 112, 154, 1);
+  color: rgb(255, 255, 255);
+  pointer-events: none;
+}
+
+.page-button:hover {
+  color: rgba(14, 112, 154, 1);
+}
