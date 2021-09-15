@@ -11,13 +11,18 @@ const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 const DEFAULT_PAGESIZE_LABEL_GENERATOR = size => `Show ${size}`
 
 const DEFAULT_STATUS_MESSAGE_GENERATOR = ({ count, lastOnPage, firstOnPage, loading }) => {
-  if (loading) return 'Loading...'
-  return count < 1 ? 'No Results' : `Showing ${firstOnPage} to ${lastOnPage} of ${count}`
+  const counter = `Showing ${firstOnPage} to ${lastOnPage}`
+  if (!loading) {
+    if (count === null) return counter
+    return count < 1 ? 'No Results' : `${counter} of ${count}`
+  }
+  if (count === null) return 'Loading ...'
+  return `${counter} of ${count}`
 }
 
 const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }) => {
   const { count } = useManifest()
-  if (!count) return null
+  // if (!count) return null
   return (
     <div className='row align-items-center mx-0'>
       <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
@@ -63,7 +68,7 @@ const StandardManifest = props => {
 }
 
 StandardManifest.propTypes = {
-  fetchCount: PropTypes.func.isRequired,
+  fetchCount: PropTypes.func,
   fetchRows: PropTypes.func.isRequired,
   definition: PropTypes.array.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number),

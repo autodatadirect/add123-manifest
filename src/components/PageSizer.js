@@ -12,6 +12,7 @@ const PageSizer = ({ pageSizes = DEFAULT_PAGE_SIZES, pageSizeLabelGenerator = DE
 
   const handlePageSizeChange = useCallback(ev => {
     const pageSize = +ev.target.value
+    console.log('----pageSizer----')
     updateUrl({ ...urlState, pageSize, page: 0 })
   }, [updateUrl, urlState])
 

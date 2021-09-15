@@ -11,6 +11,7 @@ const UrlHeader = ({ columnIndex }) => {
 
   const handleSort = useCallback(() => {
     if (!sortable) return
+    console.log('-----url header---------')
     updateUrl({
       ...urlState,
       page: 0,

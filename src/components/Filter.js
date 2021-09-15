@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useRef } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
@@ -7,10 +7,21 @@ import useUrlParamState from '../hooks/useUrlParamState'
 
 const NOPE = () => false
 
+const equals = (a, b) => {
+  console.log('a', a, 'b', b)
+  // try {
+  console.log('#equal?#', JSON.stringify(a) === JSON.stringify(b))
+  return JSON.stringify(a) === JSON.stringify(b)
+  // } catch (err) {
+  //   console.log('err', err)
+  // }
+}
+
 const Updater = ({ urlState, defaultValues }) => {
-  const { updateState: updateManifestState } = useManifest()
+  const { updateState: updateManifestState, count } = useManifest()
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
 
+  const filterRef = useRef()
   useEffect(() => {
     const filter = { ...(defaultValues || {}), ...urlState }
 
@@ -22,8 +33,13 @@ const Updater = ({ urlState, defaultValues }) => {
     delete filter.pageSize
     delete filter.sort
 
-    updateForm(filter)
-    updateManifestState({ filter, page, pageSize, sorts })
+    if (!equals(filterRef.current, filter)) {
+      console.log('******filter has changed', { count })
+      filterRef.current = filter
+      updateForm(filter)
+    }
+
+    updateManifestState({ filter: filterRef.current, page, pageSize, sorts, count })
   }, [updateForm, updateManifestState, urlState, defaultValues])
 
   return null
@@ -37,11 +53,15 @@ const SubmitOnEnter = ({ children }) => {
   return <div onKeyDown={handler}>{children}</div>
 }
 
+let counter = 0
+
 export default ({ children, defaultValues, transform }) => {
   const [urlState, updateUrl] = useUrlParamState()
 
   const process = useCallback(values => {
-    updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort })
+    // newState => history.push({ search: '?' + queryString.stringify({ ...newState, cb: counter++ }) })
+
+    updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort, cb: counter++ })
   }, [urlState, updateUrl])
 
   return (
