@@ -37,11 +37,17 @@ const SubmitOnEnter = ({ children }) => {
   return <div onKeyDown={handler}>{children}</div>
 }
 
+/**
+* An additional parameters "cb" (cache-buster) is saved to allow resubmission of save values.
+*/
+
+let counter = 0
+
 export default ({ children, defaultValues, transform }) => {
   const [urlState, updateUrl] = useUrlParamState()
 
   const process = useCallback(values => {
-    updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort })
+    updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort, cb: counter++ })
   }, [urlState, updateUrl])
 
   return (

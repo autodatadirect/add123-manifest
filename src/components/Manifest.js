@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Manifest, DefaultTable, DefaultControlsStatus, Debug, useManifest } from 'use-manifest'
+import { Manifest, DefaultTable, DefaultControlsStatus, Debug } from 'use-manifest'
 import Pager from './Pager'
 import PageSizer from './PageSizer'
 import UrlHeader from './UrlHeader'
@@ -8,30 +8,26 @@ import NoResultsHandler from './NoResultsHandler'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
-const DEFAULT_PAGESIZE_LABEL_GENERATOR = size => `Show ${size}`
-
 const DEFAULT_STATUS_MESSAGE_GENERATOR = ({ count, lastOnPage, firstOnPage, loading }) => {
-  if (loading) return 'Loading...'
-  return count < 1 ? 'No Results' : `Showing ${firstOnPage} to ${lastOnPage} of ${count}`
+  const counter = `Showing ${firstOnPage} to ${lastOnPage}`
+  if (loading && count === null) return 'Loading ...'
+  if (count === null) return counter
+  if (loading) return `${counter} of ${count}`
+  return count < 1 ? 'No Results' : `${counter} of ${count}`
 }
 
-const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }) => {
-  const { count } = useManifest()
-  if (!count) return null
-  return (
-    <div className='row align-items-center mx-0'>
-      <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
-        <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
-      </div>
-      <div className='col-xs-12 col-md text-center my-2 my-md-0'>
-        <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
-      </div>
-      <div className='col-xs-12 col-md-auto pr-md-4 my-2 my-md-0 d-flex d-md-block'>
-        <Pager />
-      </div>
+const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }) =>
+  <div className='row align-items-center mx-0'>
+    <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
+      <PageSizer className='row-limit form form-control' pageSizes={pageSizes} pageSizeLabelGenerator={pageSizeLabelGenerator} />
     </div>
-  )
-}
+    <div className='col-xs-12 col-md text-center my-2 my-md-0'>
+      <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
+    </div>
+    <div className='col-xs-12 col-md-auto pr-md-4 my-2 my-md-0 d-flex d-md-block'>
+      <Pager />
+    </div>
+  </div>
 
 const StandardManifest = props => {
   const {
@@ -39,7 +35,7 @@ const StandardManifest = props => {
     fetchRows,
     definition,
     pageSizes = DEFAULT_PAGE_SIZES,
-    pageSizeLabelGenerator = DEFAULT_PAGESIZE_LABEL_GENERATOR,
+    pageSizeLabelGenerator,
     statusMessageGenerator = DEFAULT_STATUS_MESSAGE_GENERATOR,
     NoResultsComponent = NoResultsHandler,
     trPropsHandler,
@@ -63,7 +59,7 @@ const StandardManifest = props => {
 }
 
 StandardManifest.propTypes = {
-  fetchCount: PropTypes.func.isRequired,
+  fetchCount: PropTypes.func,
   fetchRows: PropTypes.func.isRequired,
   definition: PropTypes.array.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number),
