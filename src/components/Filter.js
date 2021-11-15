@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useRef } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
@@ -10,21 +10,26 @@ const NOPE = () => false
 const Updater = ({ urlState, defaultValues }) => {
   const { updateState: updateManifestState } = useManifest()
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
+  const filter = useRef()
 
   useEffect(() => {
-    const filter = { ...(defaultValues || {}), ...urlState }
+    const updatedFilter = { ...(defaultValues || {}), ...urlState }
 
-    const page = +filter.page
-    const pageSize = +filter.pageSize
-    const sorts = sortsFromUrl(filter.sort)
+    const page = +updatedFilter.page
+    const pageSize = +updatedFilter.pageSize
+    const sorts = sortsFromUrl(updatedFilter.sort)
 
-    delete filter.page
-    delete filter.pageSize
-    delete filter.sort
+    delete updatedFilter.page
+    delete updatedFilter.pageSize
+    delete updatedFilter.sort
 
-    updateForm(filter)
-    updateManifestState({ filter, page, pageSize, sorts })
-  }, [updateForm, updateManifestState, urlState, defaultValues])
+    if (JSON.stringify(updatedFilter) !== JSON.stringify(filter.current)) {
+      filter.current = updatedFilter
+    }
+
+    updateForm(filter.current)
+    updateManifestState({ filter: filter.current, page, pageSize, sorts })
+  }, [updateForm, updateManifestState, filter.current, defaultValues, urlState])
 
   return null
 }
