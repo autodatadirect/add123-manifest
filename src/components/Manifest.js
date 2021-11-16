@@ -8,14 +8,6 @@ import NoResultsHandler from './NoResultsHandler'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
-const DEFAULT_STATUS_MESSAGE_GENERATOR = ({ count, lastOnPage, firstOnPage, loading }) => {
-  const counter = `Showing ${firstOnPage} to ${lastOnPage}`
-  if (loading && count === null) return 'Loading ...'
-  if (count === null) return counter
-  if (loading) return `${counter} of ${count}`
-  return count < 1 ? 'No Results' : `${counter} of ${count}`
-}
-
 const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }) =>
   <div className='row align-items-center mx-0'>
     <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
@@ -36,7 +28,7 @@ const StandardManifest = props => {
     definition,
     pageSizes = DEFAULT_PAGE_SIZES,
     pageSizeLabelGenerator,
-    statusMessageGenerator = DEFAULT_STATUS_MESSAGE_GENERATOR,
+    statusMessageGenerator,
     NoResultsComponent = NoResultsHandler,
     trPropsHandler,
     tdPropsHandler,
