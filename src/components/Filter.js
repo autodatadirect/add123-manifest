@@ -10,7 +10,7 @@ const NOPE = () => false
 const Updater = ({ urlState, defaultValues }) => {
   const { updateState: updateManifestState } = useManifest()
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
-  const filter = useRef()
+  const filterRef = useRef()
 
   useEffect(() => {
     const updatedFilter = { ...(defaultValues || {}), ...urlState }
@@ -23,13 +23,13 @@ const Updater = ({ urlState, defaultValues }) => {
     delete updatedFilter.pageSize
     delete updatedFilter.sort
 
-    if (JSON.stringify(updatedFilter) !== JSON.stringify(filter.current)) {
-      filter.current = updatedFilter
+    if (JSON.stringify(updatedFilter) !== JSON.stringify(filterRef.current)) {
+      filterRef.current = updatedFilter
     }
 
-    updateForm(filter.current)
-    updateManifestState({ filter: filter.current, page, pageSize, sorts })
-  }, [updateForm, updateManifestState, filter.current, defaultValues, urlState])
+    updateForm(filterRef.current)
+    updateManifestState({ filter: filterRef.current, page, pageSize, sorts })
+  }, [updateForm, updateManifestState, filterRef.current, defaultValues, urlState])
 
   return null
 }
