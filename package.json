@@ -1,6 +1,6 @@
 {
   "name": "add123-manifest",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A paginated table implementation using React Hooks",
   "main": "./dist/index.js",
   "repository": "https://github.com/autodatadirect/add123-manifest",
