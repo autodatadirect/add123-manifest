@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useRef } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
@@ -10,21 +10,26 @@ const NOPE = () => false
 const Updater = ({ urlState, defaultValues }) => {
   const { updateState: updateManifestState } = useManifest()
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
+  const filterRef = useRef()
 
   useEffect(() => {
-    const filter = { ...(defaultValues || {}), ...urlState }
+    const updatedFilter = { ...(defaultValues || {}), ...urlState }
 
-    const page = +filter.page
-    const pageSize = +filter.pageSize
-    const sorts = sortsFromUrl(filter.sort)
+    const page = +updatedFilter.page
+    const pageSize = +updatedFilter.pageSize
+    const sorts = sortsFromUrl(updatedFilter.sort)
 
-    delete filter.page
-    delete filter.pageSize
-    delete filter.sort
+    delete updatedFilter.page
+    delete updatedFilter.pageSize
+    delete updatedFilter.sort
 
-    updateForm(filter)
-    updateManifestState({ filter, page, pageSize, sorts })
-  }, [updateForm, updateManifestState, urlState, defaultValues])
+    if (JSON.stringify(updatedFilter) !== JSON.stringify(filterRef.current)) {
+      filterRef.current = updatedFilter
+    }
+
+    updateForm(filterRef.current)
+    updateManifestState({ filter: filterRef.current, page, pageSize, sorts })
+  }, [updateForm, updateManifestState, filterRef.current, defaultValues, urlState])
 
   return null
 }
@@ -37,11 +42,17 @@ const SubmitOnEnter = ({ children }) => {
   return <div onKeyDown={handler}>{children}</div>
 }
 
+/**
+* An additional parameters "cb" (cache-buster) is saved to allow resubmission of save values.
+*/
+
+let counter = 0
+
 export default ({ children, defaultValues, transform }) => {
   const [urlState, updateUrl] = useUrlParamState()
 
   const process = useCallback(values => {
-    updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort })
+    updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort, cb: counter++ })
   }, [urlState, updateUrl])
 
   return (
