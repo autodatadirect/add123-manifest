@@ -6,8 +6,6 @@ import PageSizer from './PageSizer'
 import UrlHeader from './UrlHeader'
 import NoResultsHandler from './NoResultsHandler'
 
-const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
-
 const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }) =>
   <div className='row align-items-center mx-0'>
     <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
@@ -26,7 +24,7 @@ const StandardManifest = props => {
     fetchCount,
     fetchRows,
     definition,
-    pageSizes = DEFAULT_PAGE_SIZES,
+    pageSizes,
     pageSizeLabelGenerator,
     statusMessageGenerator,
     NoResultsComponent = NoResultsHandler,
