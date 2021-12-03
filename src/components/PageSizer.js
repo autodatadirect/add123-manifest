@@ -21,9 +21,12 @@ const PageSizer = ({ pageSizes = DEFAULT_PAGE_SIZES, pageSizeLabelGenerator = DE
 
   if (!pageSizes.includes(pageSize)) pageSizes.push(pageSize)
 
+  const sizesClone = [...pageSizes]
+  sizesClone.sort(numbersAscending)
+
   return (
     <select className='form-control' value={pageSize} onChange={handlePageSizeChange}>
-      {pageSizes.sort(numbersAscending).map(size => <option key={size} value={size}>{pageSizeLabelGenerator(size)}</option>)}
+      {pageSizes.sort(sizesClone).map(size => <option key={size} value={size}>{pageSizeLabelGenerator(size)}</option>)}
     </select>
   )
 }
