@@ -26,7 +26,7 @@ const PageSizer = ({ pageSizes = DEFAULT_PAGE_SIZES, pageSizeLabelGenerator = DE
 
   return (
     <select className='form-control' value={pageSize} onChange={handlePageSizeChange}>
-      {pageSizes.sort(sizesClone).map(size => <option key={size} value={size}>{pageSizeLabelGenerator(size)}</option>)}
+      {sizesClone.map(size => <option key={size} value={size}>{pageSizeLabelGenerator(size)}</option>)}
     </select>
   )
 }
