@@ -1,6 +1,6 @@
 {
   "name": "add123-manifest",
-  "version": "1.0.12",
+  "version": "2.0.0",
   "description": "A paginated table implementation using React Hooks",
   "main": "./dist/index.js",
   "repository": "https://github.com/autodatadirect/add123-manifest",
@@ -27,9 +27,9 @@
     "standard": "^14.3.4"
   },
   "peerDependencies": {
-    "react": "^16.12.0",
+    "react": "^16.12.0 || ^17.0.2 || ^18.2.0",
     "react-router-dom": "^5.1.0",
-    "amiable-forms": "^1.1.5"
+    "amiable-forms": "^2.0.0-rc2"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "query-string": "^6.12.1",
-    "use-manifest": "^1.1.14"
+    "use-manifest": "^1.1.15"
   }
 }
