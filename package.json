@@ -28,7 +28,7 @@
   },
   "peerDependencies": {
     "react": "^16.12.0 || ^17.0.2 || ^18.2.0",
-    "react-router-dom": "^5.1.0",
+    "react-router-dom": "^5.1.0 || ^6.4.1",
     "amiable-forms": "^2.0.0-rc2"
   },
   "eslintConfig": {

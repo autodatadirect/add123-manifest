@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router'
+import { useHistory, useNavigate } from 'react-router'
 import queryString from 'query-string'
 import useUrlParams from './useUrlParams'
 
@@ -7,9 +7,17 @@ import useUrlParams from './useUrlParams'
  */
 export default () => {
   const state = useUrlParams()
-  const history = useHistory()
+
+  let navigateFunction
+  if (useNavigate) {
+    navigateFunction = useNavigate()
+  } else {
+    const history = useHistory()
+    navigateFunction = history.push
+  }
+
   return [
     state,
-    newState => history.push({ search: '?' + queryString.stringify({ ...newState }) })
+    newState => navigateFunction({ search: '?' + queryString.stringify({ ...newState }) })
   ]
 }
