@@ -1,11 +1,13 @@
 {
   "presets": [
     "@babel/preset-env",
-    "@babel/preset-react"
+    "@babel/preset-react",
+    "@babel/preset-typescript"
   ],
   "compact": true,
   "minified": true,
   "plugins": [
-    "@babel/plugin-proposal-object-rest-spread"
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread"
   ]
 }
