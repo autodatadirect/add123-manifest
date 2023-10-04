@@ -39,7 +39,8 @@
   "ts-standard": {
     "ignore": [
       "dist",
-      "src/**.test.ts"
+      "src/**/*.test.ts",
+      "src/**/*.test.js"
     ]
   },
   "dependencies": {
