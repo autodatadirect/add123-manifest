@@ -1,20 +1,24 @@
-import React, { useCallback } from 'react'
-import propTypes from 'prop-types'
+import React, { FC, useCallback } from 'react'
 import { useManifest } from 'use-manifest'
 
 import useUrlParamState from '../hooks/useUrlParamState'
 
 const DEFAULT_PAGE_SIZES = [10, 20, 50, 100]
 
-const DEFAULT_TEXT_GENERATOR = size => `Show ${size} entries`
+const DEFAULT_TEXT_GENERATOR = (size: number): string => `Show ${size} entries`
 
-const numbersAscending = (a, b) => a - b
+const numbersAscending = (a: number, b: number): number => a - b
 
-const PageSizer = ({ pageSizes = DEFAULT_PAGE_SIZES, pageSizeLabelGenerator = DEFAULT_TEXT_GENERATOR }) => {
+export interface PageSizerProps {
+  pageSizes?: number[]
+  pageSizeLabelGenerator?: (size: number) => string
+}
+
+const PageSizer: FC<PageSizerProps> = ({ pageSizes = DEFAULT_PAGE_SIZES, pageSizeLabelGenerator = DEFAULT_TEXT_GENERATOR }) => {
   const [urlState, updateUrl] = useUrlParamState()
   const { pageSize } = useManifest()
 
-  const handlePageSizeChange = useCallback(ev => {
+  const handlePageSizeChange = useCallback((ev: any) => {
     const updatedPageSize = +ev.target.value
     updateUrl({ ...urlState, pageSize: updatedPageSize, page: 0 })
   }, [updateUrl, urlState])
@@ -29,12 +33,6 @@ const PageSizer = ({ pageSizes = DEFAULT_PAGE_SIZES, pageSizeLabelGenerator = DE
       {sizesClone.map(size => <option key={size} value={size}>{pageSizeLabelGenerator(size)}</option>)}
     </select>
   )
-}
-
-PageSizer.propTypes = {
-  pageSizes: propTypes.arrayOf(propTypes.number),
-  pageSizeLabelGenerator: propTypes.func,
-  className: propTypes.string
 }
 
 export default PageSizer

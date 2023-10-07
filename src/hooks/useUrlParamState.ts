@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router'
 import queryString from 'query-string'
-import useUrlParams from './useUrlParams'
+import useUrlParams, { UrlParams } from './useUrlParams'
 
 /**
  * A hook with an API similar to useState that stores its state in the URL search parameters.
  */
-export default () => {
+export default (): [UrlParams, ((newState: Record<string, any>) => void)] => {
   const state = useUrlParams()
   const navigate = useNavigate()
 

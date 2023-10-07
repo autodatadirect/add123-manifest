@@ -1,4 +1,4 @@
-import React, { ElementType, ReactNode } from 'react'
+import React, { ElementType, FC, ReactNode } from 'react'
 import {
   CountFetcher,
   Debug,
@@ -22,21 +22,25 @@ interface ManifestNavigationProps {
   statusMessageGenerator?: StatusMessageGenerator
 }
 
-const ManifestNavigation = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }: ManifestNavigationProps): ReactNode =>
-  <div className='row align-items-center mx-0'>
-    <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
-      <PageSizer
-        className='row-limit form form-control' pageSizes={pageSizes}
-        pageSizeLabelGenerator={pageSizeLabelGenerator}
-      />
+const ManifestNavigation: FC<ManifestNavigationProps> = ({ pageSizes, pageSizeLabelGenerator, statusMessageGenerator }): ReactNode => {
+  return (
+    <div className='row align-items-center mx-0'>
+      <div className='col-xs-12 col-md-3 pl-md-4 my-2 my-md-0 text-sm-center text-md-left'>
+        {/* className='row-limit form form-control' TODO: Not currently recognized by PageSizer! */}
+        <PageSizer
+          pageSizes={pageSizes}
+          pageSizeLabelGenerator={pageSizeLabelGenerator}
+        />
+      </div>
+      <div className='col-xs-12 col-md text-center my-2 my-md-0'>
+        <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
+      </div>
+      <div className='col-xs-12 col-md-auto pr-md-4 my-2 my-md-0 d-flex d-md-block'>
+        <Pager />
+      </div>
     </div>
-    <div className='col-xs-12 col-md text-center my-2 my-md-0'>
-      <DefaultControlsStatus statusMessageGenerator={statusMessageGenerator} />
-    </div>
-    <div className='col-xs-12 col-md-auto pr-md-4 my-2 my-md-0 d-flex d-md-block'>
-      <Pager />
-    </div>
-  </div>
+  )
+}
 
 interface StandardManifestProps<Row, Filter> {
   fetchCount: CountFetcher<Filter>
@@ -52,7 +56,7 @@ interface StandardManifestProps<Row, Filter> {
   debug?: boolean
 }
 
-const StandardManifest = function <TFilter, Row>(props: StandardManifestProps<TFilter, Row>): React.JSX.Element {
+const StandardManifest = function <TFilter, Row>(props: StandardManifestProps<TFilter, Row>): ReactNode {
   const {
     fetchCount,
     fetchRows,
@@ -67,7 +71,7 @@ const StandardManifest = function <TFilter, Row>(props: StandardManifestProps<TF
     debug = false
   } = props
 
-  const adjustedDefinition = definition.map(def => ({ ...def, headerComponent: def.headerComponent ?? UrlHeader }))
+  const adjustedDefinition: Definition[] = definition.map(def => ({ ...def, headerComponent: def.headerComponent ?? UrlHeader }))
   return (
     <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={adjustedDefinition}>
       {Filter == null ? null : <Filter />}

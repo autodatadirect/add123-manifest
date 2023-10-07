@@ -1,15 +1,18 @@
-import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
+import React, { FC, ReactNode, useCallback } from 'react'
 import { usePager } from 'use-manifest'
 import useUrlParamState from '../hooks/useUrlParamState'
 
-const Pager = () => {
+interface PagerProps {
+  className?: string
+}
+
+const Pager: FC<PagerProps> = ({ className = '' }) => {
   const { page, pages, count, pageSize, loading, showFirst, showPrevious, showNext, showLast } = usePager({ numberOfPages: 5 })
   const lastPage = Math.ceil(count / pageSize) - 1
 
   if (count != null && count < 1) return null
   return (
-    <div className='manifest-pager btn-group mx-auto ml-md-auto' role='group' aria-label='pager'>
+    <div className={`manifest-pager btn-group mx-auto ml-md-auto ${className}`} role='group' aria-label='pager'>
       {showFirst ? <PagerButton page={0} loading={loading}>First</PagerButton> : null}
       {showPrevious ? <PagerButton page={page - 1} loading={loading}>{'<'}</PagerButton> : null}
       {pages.map(i => <PagerButton key={i} page={i} isCurrentPage={page === i} loading={loading}>{i + 1}</PagerButton>)}
@@ -19,11 +22,14 @@ const Pager = () => {
   )
 }
 
-Pager.propTypes = {
-  className: PropTypes.string
+interface PagerButtonProps {
+  loading: boolean
+  page: number
+  children: ReactNode
+  isCurrentPage?: boolean
 }
 
-const PagerButton = ({ page, loading, isCurrentPage, children }) => {
+const PagerButton: FC<PagerButtonProps> = ({ page, loading, isCurrentPage = false, children }) => {
   const [urlState, updateUrl] = useUrlParamState()
   const handleClick = useCallback(() => updateUrl({ ...urlState, page }), [page, urlState])
 
@@ -35,13 +41,6 @@ const PagerButton = ({ page, loading, isCurrentPage, children }) => {
       {children}
     </button>
   )
-}
-
-PagerButton.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  page: PropTypes.number.isRequired,
-  children: PropTypes.any.isRequired,
-  isCurrentPage: PropTypes.bool
 }
 
 export default Pager
