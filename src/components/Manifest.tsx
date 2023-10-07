@@ -42,17 +42,18 @@ const ManifestNavigation: FC<ManifestNavigationProps> = ({ pageSizes, pageSizeLa
   )
 }
 
-interface StandardManifestProps<Row, Filter> {
+export interface StandardManifestProps<Row, Filter> {
   fetchCount: CountFetcher<Filter>
   fetchRows: RowFetcher<Filter, Row>
   definition: Definition[]
+  tdPropsHandler: TableRowProps<Row>['tdPropsHandler']
+  Filter: ElementType
+
   pageSizes?: number[]
   pageSizeLabelGenerator?: PageSizeLabelGenerator
   statusMessageGenerator?: StatusMessageGenerator
   NoResultsComponent?: ElementType
   trPropsHandler?: TableRowProps<Row>['trPropsHandler']
-  tdPropsHandler: TableRowProps<Row>['tdPropsHandler']
-  Filter: ElementType
   debug?: boolean
 }
 
