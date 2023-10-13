@@ -11,7 +11,7 @@ const useNoRowsMessage = (): typeof MODE_HIDDEN | typeof MODE_LOADING | typeof M
   if (rows.length > 0) return MODE_HIDDEN
   if (loadingCount || loadingRows) return MODE_LOADING
   if (error != null && error !== '' && error !== 0) return MODE_ERROR
-  return count > 0 ? MODE_HIDDEN : MODE_NO_RESULTS
+  return count == null || count > 0 ? MODE_HIDDEN : MODE_NO_RESULTS
 }
 
 export default useNoRowsMessage

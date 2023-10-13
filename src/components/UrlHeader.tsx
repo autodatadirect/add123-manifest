@@ -1,9 +1,9 @@
 import React, { FC, useCallback } from 'react'
-import { Sort, useHeaderCell } from 'use-manifest'
+import { HeaderCellProps, Sort, useHeaderCell } from 'use-manifest'
 import { ASCENDING, DESCENDING } from 'use-manifest/dist/constants/sortDirections'
 import useUrlParamState from '../hooks/useUrlParamState'
 
-const UrlHeader: FC<{ columnIndex: number }> = ({ columnIndex }) => {
+const UrlHeader: FC<HeaderCellProps> = ({ columnIndex }) => {
   const [urlState, updateUrl] = useUrlParamState()
   const header = useHeaderCell(columnIndex)
   const { id, label, sortDirection, sortable } = header

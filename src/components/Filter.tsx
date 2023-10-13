@@ -1,11 +1,9 @@
 import React, { useEffect, useCallback, useRef, ReactNode, FC } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
-import { manifesto } from './Manifest'
+import { useManifest } from 'use-manifest'
 
 import { fromUrl as sortsFromUrl } from '../utils/sortsConverter'
 import useUrlParamState from '../hooks/useUrlParamState'
-
-const useManifest = manifesto<unknown, unknown>().useManifest
 
 const NOPE = (): boolean => false
 

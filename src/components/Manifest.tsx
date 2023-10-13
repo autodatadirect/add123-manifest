@@ -1,12 +1,11 @@
 import React, { ElementType, FC, ReactNode } from 'react'
 import {
   CountFetcher,
-  Debug,
+  Debug, DefArray,
   DefaultControlsStatus,
-  DefaultTable, Definition,
-  Manifest, ManifestContext, ManifestProps,
-  PageSizerProps, RowFetcher,
-  StatusProps, TableRowProps, useManifest
+  DefaultTable, Definition, Manifest,
+  PageSizerProps, RowFetcher, RowType,
+  StatusProps, TableRowProps
 } from 'use-manifest'
 import Pager from './Pager.js'
 import PageSizer from './PageSizer.js'
@@ -42,22 +41,22 @@ const ManifestNavigation: FC<ManifestNavigationProps> = ({ pageSizes, pageSizeLa
   )
 }
 
-export interface StandardManifestProps<Row, Filter> {
+export interface StandardManifestProps<Def extends DefArray, Filter> {
   fetchCount: CountFetcher<Filter>
-  fetchRows: RowFetcher<Filter, Row>
-  definition: Definition[]
-  tdPropsHandler: TableRowProps<Row>['tdPropsHandler']
+  fetchRows: RowFetcher<Filter, Def>
+  definition: Def
+  tdPropsHandler: TableRowProps<RowType<Def>>['tdPropsHandler']
   Filter: ElementType
 
   pageSizes?: number[]
   pageSizeLabelGenerator?: PageSizeLabelGenerator
   statusMessageGenerator?: StatusMessageGenerator
   NoResultsComponent?: ElementType
-  trPropsHandler?: TableRowProps<Row>['trPropsHandler']
+  trPropsHandler?: TableRowProps<RowType<Def>>['trPropsHandler']
   debug?: boolean
 }
 
-const StandardManifest = function <TFilter, Row>(props: StandardManifestProps<TFilter, Row>): ReactNode {
+const StandardManifest = function <Def extends DefArray, TFilter>(props: StandardManifestProps<Def, TFilter>): ReactNode {
   const {
     fetchCount,
     fetchRows,
@@ -72,9 +71,12 @@ const StandardManifest = function <TFilter, Row>(props: StandardManifestProps<TF
     debug = false
   } = props
 
-  const adjustedDefinition: Definition[] = definition.map(def => ({ ...def, headerComponent: def.headerComponent ?? UrlHeader }))
+  definition.forEach((def: Definition) => {
+    def.headerComponent ??= UrlHeader
+  })
+
   return (
-    <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={adjustedDefinition}>
+    <Manifest fetchRows={fetchRows} fetchCount={fetchCount} definition={definition}>
       {Filter == null ? null : <Filter />}
       <div className='table-responsive mb-4'>
         <DefaultTable className='table' trPropsHandler={trPropsHandler} tdPropsHandler={tdPropsHandler} />
@@ -87,18 +89,6 @@ const StandardManifest = function <TFilter, Row>(props: StandardManifestProps<TF
       {debug && <Debug />}
     </Manifest>
   )
-}
-
-export interface Manifesto<Filter, Row> {
-  useManifest: () => ManifestContext<Filter, Row>
-  Manifest: ({ children, fetchRows, fetchCount, definition, autoLoad }: ManifestProps<Filter, Row>) => React.JSX.Element
-}
-
-export function manifesto<Filter, Row> (): Manifesto<Filter, Row> {
-  return {
-    Manifest: Manifest<Filter, Row>,
-    useManifest: useManifest<Filter, Row>
-  } as any
 }
 
 export default StandardManifest

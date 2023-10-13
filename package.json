@@ -30,7 +30,7 @@
     "ts-standard": "^12.0.2"
   },
   "peerDependencies": {
-    "amiable-forms": "^2.0.0",
+    "amiable-forms": "file:../amiable-forms",
     "react": "^16.12.0 || ^17.0.2 || ^18.2.0",
     "react-router-dom": "^6.4.1"
   },
@@ -39,7 +39,10 @@
   },
   "ts-standard": {
     "ignore": [
+      "node_modules",
       "dist",
+      "build",
+      "example-project",
       "src/**/*.test.ts",
       "src/**/*.test.js"
     ]
@@ -51,6 +54,6 @@
     "@types/react-dom": "^18.2.8",
     "query-string": "^6.12.1",
     "typescript": "^5.2.2",
-    "use-manifest": "^1.2.0"
+    "use-manifest": "file:../use-manifest"
   }
 }
