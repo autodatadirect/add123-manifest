@@ -1,16 +1,15 @@
-import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
-import { useHeaderCell } from 'use-manifest'
+import React, { FC, useCallback } from 'react'
+import { HeaderCellProps, Sort, useHeaderCell } from 'use-manifest'
 import { ASCENDING, DESCENDING } from 'use-manifest/dist/constants/sortDirections'
 import useUrlParamState from '../hooks/useUrlParamState'
 
-const UrlHeader = ({ columnIndex }) => {
+const UrlHeader: FC<HeaderCellProps> = ({ columnIndex }) => {
   const [urlState, updateUrl] = useUrlParamState()
   const header = useHeaderCell(columnIndex)
   const { id, label, sortDirection, sortable } = header
 
   const handleSort = useCallback(() => {
-    if (!sortable) return
+    if (sortable === undefined || !sortable) return
     updateUrl({
       ...urlState,
       page: 0,
@@ -25,12 +24,8 @@ const UrlHeader = ({ columnIndex }) => {
   )
 }
 
-UrlHeader.propTypes = {
-  columnIndex: PropTypes.number.isRequired
-}
-
-const sortClass = ({ sortable, sortDirection }) => {
-  const classes = []
+const sortClass = ({ sortable = false, sortDirection }: { sortable?: boolean, sortDirection: Sort['direction'] }): string => {
+  const classes: string[] = []
 
   if (sortable) {
     classes.push('sortable')

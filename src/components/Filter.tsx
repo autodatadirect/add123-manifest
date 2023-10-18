@@ -1,21 +1,37 @@
-import React, { useEffect, useCallback, useRef } from 'react'
+import React, { FC, ReactNode, useCallback, useEffect, useRef } from 'react'
 import { AmiableForm, useForm, useSubmit } from 'amiable-forms'
 import { useManifest } from 'use-manifest'
 
 import { fromUrl as sortsFromUrl } from '../utils/sortsConverter'
 import useUrlParamState from '../hooks/useUrlParamState'
 
-const NOPE = () => false
+const NOPE = (): boolean => false
 
-const Updater = ({ urlState, defaultValues, defaultTableState }) => {
+interface UpdaterProps {
+  urlState: {
+    [key: string]: any
+  }
+  defaultValues?: {
+    [key: string]: any
+  }
+  defaultTableState: {
+    [key: string]: any
+  }
+}
+
+interface UpdaterFilter {
+  [key: string]: any
+}
+
+const Updater = ({ urlState, defaultValues, defaultTableState }: UpdaterProps): null => {
   const { updateState: updateManifestState } = useManifest()
   const { setValues: updateForm } = useForm({ shouldUpdate: NOPE })
-  const filterRef = useRef()
+  const filterRef = useRef<UpdaterFilter>()
 
   useEffect(() => {
     const updatedFilter = {
-      ...(defaultValues || {}),
-      ...(defaultTableState || {}),
+      ...(defaultValues ?? {}),
+      ...(defaultTableState ?? {}),
       ...urlState
     }
 
@@ -38,9 +54,9 @@ const Updater = ({ urlState, defaultValues, defaultTableState }) => {
   return null
 }
 
-const SubmitOnEnter = ({ children }) => {
+const SubmitOnEnter: FC<{ children: ReactNode }> = ({ children }) => {
   const { submit } = useSubmit()
-  const handler = ev => {
+  const handler = (ev: any): void => {
     if (ev.which === 13) submit()
   }
   return <div onKeyDown={handler}>{children}</div>
@@ -50,12 +66,23 @@ const SubmitOnEnter = ({ children }) => {
 * An additional parameters "cb" (cache-buster) is saved to allow resubmission of save values.
 */
 
+export interface FilterProps {
+  children: ReactNode
+  defaultValues?: {
+    [key: string]: any
+  }
+  defaultTableState: {
+    [key: string]: any
+  }
+  transform: AmiableFormProps['transform']
+}
+
 let counter = 0
 
-export default ({ children, defaultValues, defaultTableState, transform }) => {
+const Filter: FC<FilterProps> = ({ children, defaultValues, defaultTableState, transform }) => {
   const [urlState, updateUrl] = useUrlParamState()
 
-  const process = useCallback(values => {
+  const process = useCallback((values: Record<string, any>) => {
     updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort, cb: counter++ })
   }, [urlState, updateUrl])
 
@@ -68,3 +95,5 @@ export default ({ children, defaultValues, defaultTableState, transform }) => {
     </AmiableForm>
   )
 }
+
+export default Filter

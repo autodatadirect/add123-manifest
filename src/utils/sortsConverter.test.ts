@@ -7,7 +7,7 @@ describe('sortsConverter', () => {
     })
     it('handles empty inputs', () => {
       expect(toUrl()).toEqual([])
-      expect(toUrl(null)).toEqual([])
+      expect(toUrl(undefined)).toEqual([])
       expect(toUrl([])).toEqual([])
     })
     it('works for ascending', () => {
@@ -28,7 +28,7 @@ describe('sortsConverter', () => {
     })
     it('handles empty inputs', () => {
       expect(fromUrl()).toEqual([])
-      expect(fromUrl(null)).toEqual([])
+      expect(fromUrl(undefined)).toEqual([])
       expect(fromUrl([])).toEqual([])
     })
     it('works with a single string', () => {

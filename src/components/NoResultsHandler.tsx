@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import useNoRowsMessage, { MODE_NO_RESULTS, MODE_HIDDEN, MODE_ERROR } from '../hooks/useNoRowsMessage'
 import NoRowsMessage from './NoResultsMessage'
 
-const NoResultsHandler = ({ noResultsMesg = 'No Results', loadingMesg = 'Loading ...', errorMesg = 'Error' }) => {
+const NoResultsHandler = ({ noResultsMesg = 'No Results', loadingMesg = 'Loading ...', errorMesg = 'Error' }): ReactNode => {
   const mode = useNoRowsMessage()
   if (mode === MODE_HIDDEN) return null
   let message = loadingMesg
