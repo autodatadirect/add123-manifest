@@ -41,22 +41,22 @@ const ManifestNavigation: FC<ManifestNavigationProps> = ({ pageSizes, pageSizeLa
   )
 }
 
-export interface StandardManifestProps<Def extends DefArray, Filter> {
-  fetchCount: CountFetcher<Filter>
-  fetchRows: RowFetcher<Filter, Def>
+export interface StandardManifestProps<Def extends DefArray, Row extends RowType<Def>, TFilter> {
+  fetchCount: CountFetcher<TFilter>
+  fetchRows: RowFetcher<TFilter, Row>
   definition: Def
-  tdPropsHandler: TableRowProps<RowType<Def>>['tdPropsHandler']
   Filter: ElementType
 
   pageSizes?: number[]
   pageSizeLabelGenerator?: PageSizeLabelGenerator
   statusMessageGenerator?: StatusMessageGenerator
   NoResultsComponent?: ElementType
-  trPropsHandler?: TableRowProps<RowType<Def>>['trPropsHandler']
+  tdPropsHandler: TableRowProps<Row>['tdPropsHandler']
+  trPropsHandler?: TableRowProps<Row>['trPropsHandler']
   debug?: boolean
 }
 
-const StandardManifest = function <Def extends DefArray, TFilter>(props: StandardManifestProps<Def, TFilter>): ReactNode {
+const StandardManifest = function <Def extends DefArray, TFilter, Row extends RowType<Def>>(props: StandardManifestProps<Def, Row, TFilter>): ReactNode {
   const {
     fetchCount,
     fetchRows,

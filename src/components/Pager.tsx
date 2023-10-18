@@ -8,7 +8,7 @@ interface PagerProps {
 
 const Pager: FC<PagerProps> = ({ className = '' }) => {
   const { page, pages, count, pageSize, loading, showFirst, showPrevious, showNext, showLast } = usePager({ numberOfPages: 5 })
-  const lastPage = Math.ceil(count ?? 0 / pageSize) - 1
+  const lastPage = Math.ceil((count ?? 0) / pageSize) - 1
 
   if (count != null && count < 1) return null
   return (
