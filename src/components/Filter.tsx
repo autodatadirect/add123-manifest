@@ -75,12 +75,21 @@ export interface FilterProps {
     [key: string]: any
   }
   transform: AmiableFormProps['transform']
+  loadingClassName?: string
 }
+
+const LoadingMessage: FC<{ className?: string }> = ({ className = 'd-flex' }) =>
+  <div className={className}>
+    <h3 className='m-auto'>
+      Loading ...
+    </h3>
+  </div>
 
 let counter = 0
 
-const Filter: FC<FilterProps> = ({ children, defaultValues, defaultTableState, transform }) => {
+const Filter: FC<FilterProps> = ({ children, defaultValues, defaultTableState, transform, loadingClassName }) => {
   const [urlState, updateUrl] = useUrlParamState()
+  const { loadingCount, loadingRows } = useManifest()
 
   const process = useCallback((values: Record<string, any>) => {
     updateUrl({ ...values, pageSize: urlState.pageSize, sort: urlState.sort, cb: counter++ })
@@ -90,7 +99,7 @@ const Filter: FC<FilterProps> = ({ children, defaultValues, defaultTableState, t
     <AmiableForm process={process} transform={transform}>
       <Updater urlState={urlState} defaultValues={defaultValues} defaultTableState={defaultTableState} />
       <SubmitOnEnter>
-        {children}
+        {!loadingCount && !loadingRows ? children : <LoadingMessage className={loadingClassName} />}
       </SubmitOnEnter>
     </AmiableForm>
   )
